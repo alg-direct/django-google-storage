@@ -1,10 +1,7 @@
 # coding=utf-8
 from django.core.files.base import File
 
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
+import io
 
 
 class GSBotoStorageFile(File):
@@ -23,7 +20,7 @@ class GSBotoStorageFile(File):
     @property
     def file(self):
         if self._file is None:
-            self._file = StringIO()
+            self._file = io.StringIO()
             if 'r' in self._mode:
                 self._is_dirty = False
                 self.key.get_contents_to_file(self._file)

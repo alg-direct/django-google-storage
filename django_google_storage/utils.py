@@ -1,4 +1,7 @@
-from django.utils.encoding import force_unicode
+try:
+    from django.utils.encoding import force_unicode
+except:
+    from django.utils.encoding import force_text as force_unicode
 
 
 def safe_join(base, *paths):
@@ -13,7 +16,7 @@ def safe_join(base, *paths):
 
     Paths outside the base path indicate a possible security sensitive operation.
     """
-    from urlparse import urljoin
+    from urllib.parse import urljoin
     base_path = force_unicode(base)
     paths = map(lambda p: force_unicode(p), paths)
     final_path = urljoin(base_path + ("/" if not base_path.endswith("/") else ""), *paths)

@@ -5,7 +5,11 @@ import mimetypes
 from django.conf import settings
 from django.core.files.storage import Storage
 from django.core.exceptions import ImproperlyConfigured, SuspiciousOperation
-from django.utils.encoding import force_unicode, smart_str
+from django.utils.encoding import smart_str
+try:
+    from django.utils.encoding import force_unicode
+except:
+    from django.utils.encoding import force_text as force_unicode
 
 from .format import SubdomainCallingFormat
 from .file import GSBotoStorageFile
@@ -108,7 +112,7 @@ class GoogleStorage(Storage):
         """Retrieves a bucket if it exists, otherwise creates it."""
         try:
             return self.connection.get_bucket(name, validate=AUTO_CREATE_BUCKET)
-        except Exception, e:
+        except Exception as e:
             if AUTO_CREATE_BUCKET:
                 bucket = self.connection.create_bucket(name)
                 bucket.set_acl(self.bucket_acl)
