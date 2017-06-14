@@ -224,7 +224,8 @@ class GoogleStorage(Storage):
                                                 query_auth=self.querystring_auth, \
                                                 force_http=not self.secure_urls)
 
-    def get_available_name(self, name):
+    def get_available_name(self, name, max_length=None):
+        """ max_length is passed in by django/core/files/storage.py but it is not used here."""
         """ Overwrite existing file with the same name. """
         if FILE_OVERWRITE:
             name = self._clean_name(name)
